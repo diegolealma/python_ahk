@@ -1,21 +1,32 @@
+import secrets
+import string
 
-import random
+# Definindo a lista de caracteres possíveis
+caracteres = string.ascii_lowercase + string.ascii_uppercase + string.digits[1:] + '#@!*&$'
 
-caracteres = {
-    'caracteres_numeros' : "123456789",
-    'caracteres_simbolos' : "@#$%&*?!",
-    'caracteres_letras' : "abcdefghijklmnopqrstuvwxyz",
-    'caracteres_letras_maiusculas' : "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    }
+# Inicializando a sequência vazia
+sequencia = ""
 
+# Gerando o primeiro caractere (letra minúscula)
+sequencia += secrets.choice(string.ascii_lowercase)
+print(sequencia)
+# Gerando o segundo caractere (letra maiúscula)
+sequencia += secrets.choice(string.ascii_uppercase)
+print(sequencia)
+# Gerando o terceiro caractere (número)
+sequencia += secrets.choice(string.digits[1:])
+print(sequencia)
+# Gerando o quarto caractere (símbolo)
+sequencia += secrets.choice('#@!*&$')
+print(sequencia)
+# Definindo o tamanho desejado da sequência
+tamanho_sequencia = 9
 
-tamanho = 9
+# Gerando o restante da sequência de caracteres aleatórios
+while len(sequencia) < tamanho_sequencia:
+    sequencia += secrets.choice(caracteres)
 
+# Embaralhando a sequência para garantir aleatoriedade
+sequencia_embaralhada = ''.join(secrets.choice(sequencia) for _ in range(len(sequencia)))
 
-caractere_chave_aleatorio = random.choice(list(caracteres.keys()))
-print(list(caracteres.keys()))
-print(caractere_chave_aleatorio)
-caractere_aleatorio = random.choice(caracteres[caractere_chave_aleatorio])
-print(caracteres[caractere_chave_aleatorio])
-print(caractere_aleatorio)
-
+print(sequencia_embaralhada)
