@@ -2,20 +2,30 @@ import time
 import pyautogui
 import pyperclip
 from ahk import AHK
+import senha as password
 
+ahk = AHK(executable_path='C:/Program Files/AutoHotkey/v2/AutoHotkey64.exe')
 
-mensagem = "Hello World"
+mensagem = ''
 
 
 def digitar_mensagem():
-    # time.sleep(0.9) 
-    # pyautogui.typewrite(mensagem)
+    mensagem = password.senha()
     pyperclip.copy(mensagem)
     pyautogui.hotkey('ctrl', 'v')
 
-ahk = AHK(executable_path='D:/Diego/AutoHotKey/v2/AutoHotkey64.exe')
+
+
+def gerarsenha():
+    senha = password.senha()
+    time.sleep(0.2)
+    mensagem = f"Aqui está a sua senha de 9 caracteres: {senha} "
+    ahk.send_input(mensagem)
+    
+   
 
 ahk.add_hotkey('^1', callback=digitar_mensagem)
-ahk.start_hotkeys()  
-ahk.block_forever()  
+ahk.add_hotstring('gerarsenha', gerarsenha, options='*') 
+ahk.start_hotkeys()
+ahk.block_forever()
 
