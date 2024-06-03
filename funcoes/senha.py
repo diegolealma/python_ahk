@@ -1,28 +1,28 @@
 import secrets
 import string
 
-def senha():
+def senha(tamanho=9):
+    # Verifica se o tamanho está dentro do intervalo válido (4-40)
+    if tamanho < 4 or tamanho > 40:
+        raise ValueError("O tamanho da senha deve estar entre 4 e 40 caracteres.")
+
     # Definindo a lista de caracteres possíveis
-    caracteres = string.ascii_lowercase + string.ascii_uppercase + string.digits[1:] + '*#@$&&@#*$'
+    caracteres = string.ascii_letters + string.digits + '*#@$&&@#*$'
 
     # Inicializando a sequência com os caracteres obrigatórios
     sequencia = [
         secrets.choice(string.ascii_lowercase),  # letra minúscula
         secrets.choice(string.ascii_uppercase),  # letra maiúscula
-        secrets.choice(string.digits[1:]),       # número
-        secrets.choice('*#@$@#&&*$')             # símbolo
+        secrets.choice(string.digits),           # número
+        secrets.choice('*#@$&&@#*$')             # símbolo
     ]
 
-    # Definindo o tamanho desejado da sequência
-    tamanho_sequencia = 9
-
     # Gerando o restante da sequência de caracteres aleatórios
-    while len(sequencia) < tamanho_sequencia:
+    while len(sequencia) < tamanho:
         sequencia.append(secrets.choice(caracteres))
 
     # Embaralhando a sequência para garantir aleatoriedade
-    secrets_generator = secrets.SystemRandom()
-    secrets_generator.shuffle(sequencia)
+    secrets.SystemRandom().shuffle(sequencia)
 
     # Convertendo a lista em uma string
     sequencia_embaralhada = ''.join(sequencia)

@@ -4,12 +4,15 @@ from funcoes.senha import senha
 from funcoes.hotstrings import adicionar_hotstring_ahk
 from resources.ahk_instance import ahk
 
-
-def on_button_click(senha_entry):
-    senha_gerada = senha()
-    senha_entry.delete(0, tk.END)
-    senha_entry.insert(0, senha_gerada)
-    messagebox.showinfo("Senha Gerada", "A senha foi gerada e enviada com sucesso!")
+def on_button_click(senha_entry, tamanho_entry):
+    try:
+        tamanho = int(tamanho_entry.get())
+        senha_gerada = senha(tamanho)
+        senha_entry.delete(0, tk.END)
+        senha_entry.insert(0, senha_gerada)
+        messagebox.showinfo("Senha Gerada", "A senha foi gerada e enviada com sucesso!")
+    except ValueError as e:
+        messagebox.showwarning("Tamanho Inválido", str(e))
 
 def adicionar_hotstring_interface(hotstring_entry, texto_hotstring_entry, hotstring_list):
     hotstring = hotstring_entry.get()
@@ -23,6 +26,10 @@ def adicionar_hotstring_interface(hotstring_entry, texto_hotstring_entry, hotstr
     else:
         messagebox.showwarning("Entrada Inválida", "Por favor, insira valores válidos para a hotstring e o texto.")
 
+def on_scale_change(scale, tamanho_entry):
+    tamanho_entry.delete(0, tk.END)
+    tamanho_entry.insert(0, str(scale.get()))
+
 def iniciar_interface():
     root = tk.Tk()
     root.title("Gerador de Senhas")
@@ -34,13 +41,22 @@ def iniciar_interface():
     notebook.add(frame_gerar_senha, text='Gerar Senha')
 
     label = tk.Label(frame_gerar_senha, text="Clique no botão para gerar uma senha:")
-    label.pack(pady=5)
+    label.grid(row=0, column=0, columnspan=2, pady=5)
 
     senha_entry = tk.Entry(frame_gerar_senha, width=30)
-    senha_entry.pack(pady=5)
+    senha_entry.grid(row=1, column=0, columnspan=2, pady=5)
 
-    button = tk.Button(frame_gerar_senha, text="Gerar Senha", command=lambda: on_button_click(senha_entry))
-    button.pack(pady=5)
+    label_tamanho = tk.Label(frame_gerar_senha, text="Tamanho da senha:")
+    label_tamanho.grid(row=2, column=0, pady=5, sticky='w')
+
+    tamanho_entry = tk.Entry(frame_gerar_senha, width=10)
+    tamanho_entry.grid(row=2, column=1, pady=5)
+
+    scale = tk.Scale(frame_gerar_senha, from_=4, to=40, orient=tk.HORIZONTAL, command=lambda value: on_scale_change(scale, tamanho_entry))
+    scale.grid(row=3, column=0, columnspan=2, pady=5)
+
+    button = tk.Button(frame_gerar_senha, text="Gerar Senha", command=lambda: on_button_click(senha_entry, tamanho_entry))
+    button.grid(row=4, column=0, columnspan=2, pady=5)
 
     frame_campo_editavel = ttk.Frame(notebook, padding=10)
     notebook.add(frame_campo_editavel, text='Campo Editável')
